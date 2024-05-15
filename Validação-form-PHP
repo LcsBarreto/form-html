@@ -1,0 +1,31 @@
+<?php
+// Verifica se os dados foram submetidos
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Obtém os dados do formulário
+    $nome = $_POST["nome"];
+    $cpf = $_POST["cpf"];
+    $email = $_POST["email"];
+    $data_nascimento = $_POST["data_nascimento"];
+
+    // Conectar ao banco de dados (substitua 'localhost', 'usuario', 'senha' e 'nome_banco_dados' pelos seus dados)
+    $conexao = new mysqli("localhost", "usuario", "senha", "nome_banco_dados");
+
+    // Verifica a conexão
+    if ($conexao->connect_error) {
+        die("Falha na conexão: " . $conexao->connect_error);
+    }
+
+    // Prepara a consulta SQL para inserir os dados do cliente
+    $sql = "INSERT INTO clientes (nome, cpf, email, data_nascimento) VALUES ('$nome', '$cpf', '$email', '$data_nascimento')";
+
+    // Executa a consulta SQL
+    if ($conexao->query($sql) === TRUE) {
+        echo "Cliente cadastrado com sucesso.";
+    } else {
+        echo "Erro ao cadastrar cliente: " . $conexao->error;
+    }
+
+    // Fecha a conexão com o banco de dados
+    $conexao->close();
+}
+?>
